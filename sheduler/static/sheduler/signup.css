@@ -1,0 +1,216 @@
+/* Base Styles */
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #3a5a8a;
+  --accent-color: #ff6b6b;
+  --text-color: #333;
+  --light-gray: #f8f9fa;
+  --border-color: #ddd;
+  --error-color: #e74c3c;
+  --success-color: #2ecc71;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background-color: #f5f7fa;
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styles */
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Main Content Styles */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Sign Up Form Styles */
+#signup-form {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#signup-form h2 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+/* Message Styles */
+#signup-form h5 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem;
+  border-radius: 6px;
+  font-weight: normal;
+  font-size: 0.95rem;
+}
+
+/* Success message */
+#signup-form h5:has(+ form) {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+/* Error message */
+#signup-form h5:not(:has(+ form)) {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--error-color);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+input {
+  padding: 0.9rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+}
+
+input::placeholder {
+  color: #aaa;
+  font-weight: 300;
+}
+
+/* Password fields specific styling */
+input[type="password"] {
+  letter-spacing: 0.5px;
+}
+
+button[type="submit"] {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Sign In Link */
+#signup-form p {
+  text-align: center;
+  margin-top: 2rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+#signup-form a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+#signup-form a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header {
+    padding: 1.3rem;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  #signup-form {
+    padding: 2rem 1.8rem;
+  }
+
+  #signup-form h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 1.5rem;
+  }
+
+  header {
+    padding: 1.2rem;
+  }
+
+  #signup-form {
+    padding: 1.8rem 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  input {
+    padding: 0.8rem 1rem;
+  }
+
+  button[type="submit"] {
+    padding: 0.8rem;
+  font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  #signup-form {
+    padding: 1.5rem 1.2rem;
+  }
+
+  input {
+    padding: 0.7rem 0.9rem;
+  }
+}

@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Manage Schedules</title>
-  <link rel="stylesheet" href="{% static 'index.css' %}">
+  <link rel="stylesheet" href="{% static 'manage.css' %}">
 </head>
 <body>
     <a href="{% url 'index' %}">
@@ -64,12 +64,6 @@
 
 
     <h2>Manage Schedules</h2>
-
-        {% if messages %}
-          {% for message in messages %}
-            <div style="color: green;">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
 
         {% if schedules %}
           <ul class="schedule-list">

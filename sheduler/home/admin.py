@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Shedule, Notification
+from .models import Shedule, Message2Manager
 
 # Register your models here.
 admin.site.register([
     Shedule,
-    Notification
+    Message2Manager
 ])

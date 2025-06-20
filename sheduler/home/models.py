@@ -17,7 +17,7 @@ class Shedule(models.Model):
     def __str__(self):
         return self.title
 
-class Notification(models.Model):
+class Message2Manager(models.Model):
     message = models.TextField()
 
     def __str__(self):

@@ -35,6 +35,14 @@ def manage_schedule(request):
                 end_time = request.POST['end_time']
                 user_id = request.POST.get('user_id')
 
+                start = datetime.fromisoformat(start_time)
+                end = datetime.fromisoformat(end_time)
+
+                # Check if end time is before start time
+                if end <= start:
+                    messages.error(request, 'End time must be after start time.')
+                    return redirect('manage_schedule')
+
                 schedule.title = title
                 schedule.department = department
                 schedule.start_time = start_time
