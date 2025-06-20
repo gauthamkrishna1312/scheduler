@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scheduler</title>
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+</head>
+<body>
+    <header>
+        <h1>SHEDULER</h1><br>
+            <h3>Hello {{ username }}</h3>
+            <nav>
+                <ul>
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </nav>
+    </header>
+            <main>
+                <section id="welcome-section">
+                    <h2>Welcome to the Scheduler</h2>
+                    <p>Here you can manage your tasks and schedules efficiently.</p>
+                </section>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'manage_schedule' %}">
+                      <button style="
+                        background-color: #0077cc;
+                        color: white;
+                        padding: 10px 16px;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                      ">
+                        Manage Schedules
+                      </button>
+                    </a>
+                {% endif %}
+                
+                <h2>Your Shedules</h2>
+                    <section id="task-section">
+                        
+                        {% if shedule %}
+                        <ul class="schedule-list">
+                            {% for object in shedule %}
+                                <li class="schedule-card">
+                                  <div class="schedule-title">
+                                    {{ object.title }}
+                                  </div>
+                                  <div class="schedule-info">
+                                    <p>Department: {{ object.department }}</p>
+                                    <p>Start: {{ object.start_time }}</p>
+                                    <p>End: {{ object.end_time }}</p>
+                                  </div>
+                            {% endfor %}
+                          </ul>
+                        {% else %}
+                          <p>No schedules available.</p>
+                        {% endif %}
+
+                    <!-- Task management features will go here -->
+                </section>
+            </main>      
+    </body>
+    </html>
