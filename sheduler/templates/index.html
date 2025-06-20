@@ -39,6 +39,22 @@
                       </button>
                     </a>
                 {% endif %}
+                <br>
+                {% if request.user.is_authenticated and not request.user.is_superuser %}
+                    <a href="{% url 'sendmessage' %}">
+                      <button style="
+                        background-color: #0077cc;
+                        color: white;
+                        padding: 10px 16px;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                      ">
+                        Message to manager
+                      </button>
+                    </a>
+                {% endif %}
 
                 <h2>Your Shedules</h2>
                     <section id="task-section">

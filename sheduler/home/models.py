@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -17,9 +19,13 @@ class Shedule(models.Model):
     def __str__(self):
         return self.title
 
-class Message2Manager(models.Model):
-    message = models.TextField()
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    subject = models.CharField(max_length=200)
+    body = models.TextField()
+    sent_at = models.DateTimeField(default=timezone.now)
+    read = models.BooleanField(default=False, null=True)
 
     def __str__(self):
-        return self.message[:50]
-    
+        return f"Message from {self.sender.username}"

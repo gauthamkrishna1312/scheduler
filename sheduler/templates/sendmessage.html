@@ -1,0 +1,32 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sendmessage</title>
+    <link rel="stylesheet" href="{% static 'sheduler/sendmsg.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Send message to manager</h1>
+    </header>
+    <main>
+        <section id="message-form">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="subject" placeholder="Subject" required>
+                <input type="text" name="body" placeholder="Message" required>
+                <button type="submit">Send message</button>
+            </form>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+
+            <br>
+            <button class="button2" type="button" onclick="window.location.href='{% url 'index' %}'">Back to Home</button>
+        </section>
+    </main>   
+</body>
+</html>

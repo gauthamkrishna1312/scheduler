@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .models import Shedule
-
+from .models import Shedule, Message
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -103,30 +102,6 @@ def create_schedule(request):
     users = User.objects.all()
     return render(request, 'manage_schedule.html', {'users': users})
 
-# @user_passes_test(lambda u: u.is_superuser, login_url='signin')
-# def create_schedule(request):
-#     if request.method == 'POST':
-#         title = request.POST['title']
-#         department = request.POST.get('department', '')
-#         start_time = request.POST['start_time']
-#         end_time = request.POST['end_time']
-#         user_id = request.POST['user_id']
-
-#         user = User.objects.get(id=user_id)
-#         Shedule.objects.create(
-#             user=user,
-#             title=title,
-#             department=department,
-#             start_time=start_time,
-#             end_time=end_time
-#         )
-#         messages.success(request, 'Schedule created successfully!')
-#         return redirect('manage_schedule')  # Change this to your actual redirect view name
-
-#     user = User.objects.all()
-#     context = {'users': user}
-
-#     return render(request, 'manage_schedule.html', context)
 
 @login_required(login_url='signin')
 def index(request):
@@ -143,23 +118,30 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-    # current_datetime = timezone.now()
-    # todos = Shedule.objects.filter(user=request.user)
-
-    # pendingtodos = todos.filter(Q(completed=False) & Q(due_date__gt=current_datetime))
-    # checkedtods = todos.filter(completed=True)
-    # expiredtodos = todos.filter(due_date__lt=current_datetime)
-    # return render(request, 'index.html', {
-    #     'todos': todos,
-    #     'pendingtodos':pendingtodos,
-    #     'checkedtods':checkedtods,
-    #     'expiredtodos':expiredtodos,
-    #     'username': request.user.username,
-    #     })
 @login_required(login_url='signin')
 def logout(request):
     auth.logout(request)
     return redirect('signin') 
+
+@login_required(login_url='signin')
+def sendmessage(request):
+    if request.method == 'POST':
+
+        sender = request.user
+        subject = request.POST['subject']
+        body = request.POST['body']
+
+        Message.objects.create(
+            sender=sender,
+            subject=subject,
+            body=body
+        )
+        messages.success(request, 'Message sent successfully!')
+        return redirect('sendmessage')
+
+    return render(request, 'sendmessage.html')
+
+
 
 
 def signup(request):
