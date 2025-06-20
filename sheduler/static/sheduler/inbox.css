@@ -1,0 +1,157 @@
+/* styles.css - Responsive Inbox Design */
+
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+/* Button Styles */
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #3498db;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Alert Messages */
+.alert-success {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+}
+
+/* Message List */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: white;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+li strong {
+    color: #2c3e50;
+    margin-right: 5px;
+}
+
+/* Form Styles */
+form {
+    margin: 10px 0;
+    display: inline-block;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    li {
+        padding: 15px;
+    }
+    
+    button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    form {
+        display: block;
+        margin: 15px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    li {
+        padding: 10px;
+    }
+    
+    li strong {
+        display: block;
+        margin-top: 8px;
+    }
+    
+    button {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+}
+
+/* Status Indicators */
+✅ {
+    color: #28a745;
+}
+
+❌ {
+    color: #dc3545;
+}
+
+/* Admin Controls */
+[type="submit"][name="toggle_read"] {
+    background-color: #17a2b8;
+}
+
+[type="submit"][name="delete_message"] {
+    background-color: #dc3545;
+}
+
+[type="submit"][name="clear_all"] {
+    background-color: #dc3545;
+}
+
+/* Home Button */
+a button {
+    background-color: #6c757d;
+}
+
+/* Message Metadata */
+li > strong {
+    font-weight: 600;
+}
+
+/* Empty State */
+li:empty {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}

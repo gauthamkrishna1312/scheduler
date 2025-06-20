@@ -11,4 +11,5 @@ urlpatterns = [
     path('manage_schedule', views.manage_schedule, name='manage_schedule'),
     path('create_schedule', views.create_schedule, name='create_schedule'),
     path('message', views.sendmessage, name='sendmessage'),
+    path('inbox', views.inbox, name='inbox'),
 ]

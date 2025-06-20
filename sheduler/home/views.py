@@ -108,20 +108,20 @@ def index(request):
     current_datetime = timezone.now()
     shedule = Shedule.objects.filter(user=request.user).order_by('start_time')
     users = User.objects.all()
+    unread_count = 0
+
+    if request.user.is_superuser:
+        unread_count = Message.objects.filter(read=False).count()
+
 
     context = {
         'shedule': shedule,
-        'username': request.user.username,
-        'users': users if request.user.is_superuser else None
+        'username': request.user.username, 
+        'users': users if request.user.is_superuser else None , # Show users only to superusers
+        'unread_count': unread_count, 
     }
 
     return render(request, 'index.html', context)
-
-
-@login_required(login_url='signin')
-def logout(request):
-    auth.logout(request)
-    return redirect('signin') 
 
 @login_required(login_url='signin')
 def sendmessage(request):
@@ -142,6 +142,47 @@ def sendmessage(request):
     return render(request, 'sendmessage.html')
 
 
+@login_required(login_url='signin')
+def inbox(request):
+
+    sended_user = Message.objects.filter(sender=request.user).order_by('-sent_at')
+    message = Message.objects.all().order_by('-sent_at')
+
+    if request.method == 'POST' and request.user.is_superuser:
+        if 'delete_message' in request.POST:
+            message_id = request.POST.get('message_id')
+            try:
+                Message.objects.get(id=message_id).delete()
+            except Message.DoesNotExist:
+                pass
+
+        elif 'clear_all' in request.POST:
+            Message.objects.all().delete()
+
+        elif 'toggle_read' in request.POST:
+            message_id = request.POST.get('message_id')
+            try:
+                msg = Message.objects.get(id=message_id)
+                msg.read = not msg.read
+                msg.save()
+            except Message.DoesNotExist:
+                pass
+
+        return redirect('inbox')
+    context = {
+        'sended_user': sended_user,
+        'message': message,
+    }
+  
+    return render(request, 'inbox.html', context)
+
+
+
+
+@login_required(login_url='signin')
+def logout(request):
+    auth.logout(request)
+    return redirect('signin') 
 
 
 def signup(request):

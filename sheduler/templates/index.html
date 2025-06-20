@@ -24,6 +24,18 @@
                     <h2>Welcome to the Scheduler</h2>
                     <p>Here you can manage your tasks and schedules efficiently.</p>
                 </section>
+
+                {% if request.user.is_superuser %}
+                  <div class="inbox-container">
+                      <a href="{% url 'inbox' %}">
+                          <button class="inbox-btn">📬 Inbox</button>
+                          {% if unread_count > 0 %}
+                              <span class="badge">{{ unread_count }}</span>
+                          {% endif %}
+                      </a>
+                  </div>
+                {% endif %}
+
                 {% if request.user.is_superuser %}
                     <a href="{% url 'manage_schedule' %}">
                       <button style="
@@ -39,6 +51,7 @@
                       </button>
                     </a>
                 {% endif %}
+
                 <br>
                 {% if request.user.is_authenticated and not request.user.is_superuser %}
                     <a href="{% url 'sendmessage' %}">

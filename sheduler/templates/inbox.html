@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox</title>
+    <link rel="stylesheet" href="{% static 'sheduler/inbox.css' %}">
+        <h2>All Messages</h2>
+        <div>
+            <a href="{% url 'index' %}">
+                <button>🏠 Go to Home</button>
+            </a>
+        </div>
+        {% if request.user.is_superuser %}
+            <form method="post" style="margin-bottom: 20px;">
+                {% csrf_token %}
+                <button type="submit" name="clear_all"
+                    onclick="return confirm('⚠️ Are you sure you want to delete ALL messages? This action cannot be undone!');">
+                    ❌ Clear All Messages
+                </button>
+            </form>
+        {% endif %}
+
+
+        {% if messages %}
+            <div class="alert alert-success">
+                {{ messages }}
+            </div>
+        {% endif %}
+        <ul>
+            {% for message in message %}
+                <li>
+                    <strong>Employee:</strong> {{ message.sender }}
+                    <strong>Subject:</strong> {{ message.subject }}
+                    <strong>Message:</strong> {{ message.body }}
+                    <strong>Sendtime:</strong> {{ message.sent_at }}
+                    <strong>Status:</strong>
+                        {% if message.read %}
+                            ✅ Read
+                        {% else %}
+                            ❌ Unread
+                        {% endif %}
+
+                        {% if request.user.is_superuser %}
+                            <!-- Toggle Read/Unread -->
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="message_id" value="{{ message.id }}">
+                                <button type="submit" name="toggle_read">
+                                    {% if message.read %}Mark as Unread{% else %}Mark as Read{% endif %}
+                                </button>
+                            </form>
+                        
+                            <!-- Delete Message -->
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="message_id" value="{{ message.id }}">
+                                <button type="submit" name="delete_message" onclick="return confirm('Are you sure you want to delete this message?')">
+                                    🗑 Delete
+                                </button>
+                            </form>
+                        {% endif %}
+                </li>
+            {% empty %}
+                <li>No messages available.</li>
+            {% endfor %}
+        </ul>
+</head>
+<body>
+
+
