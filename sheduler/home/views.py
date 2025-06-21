@@ -2,20 +2,66 @@ from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.models import auth
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.utils.timezone import localtime
 from .models import Shedule, Message
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import Shedule,User
+from django.core.mail import send_mail
+from urllib.parse import urlencode, quote
+from django.conf import settings
+from datetime import datetime
 # Create your views here.
+@login_required(login_url='signin')
+def send_schedule_email(schedule):
+    user_email = schedule.user.email
+    start = localtime(schedule.start_time).strftime('%Y%m%dT%H%M%SZ')
+    end = localtime(schedule.end_time).strftime('%Y%m%dT%H%M%SZ')
 
+    title = schedule.title
+    department = schedule.department or 'Not specified'
+    description = f"Department: {department}\nTitle: {title}"
+    
+    # Construct the Google Calendar link
+    params = {
+        "action": "TEMPLATE",
+        "text": title,
+        "dates": f"{start}/{end}",
+        "details": f"{description}\n\nClick to add this schedule to your calendar.",
+    }
+    google_calendar_link = "https://www.google.com/calendar/render?" + urlencode(params, quote_via=quote)
 
+    # Compose the email message
+    message = f"""
+        Hi {schedule.user.username},
+
+        You have a new schedule update.
+
+        📌 Title: {title}
+        🕒 Start Time: {schedule.start_time}
+        🕔 End Time: {schedule.end_time}
+        🏢 Department: {department}
+
+        Click below to add this to your Google Calendar:
+        {google_calendar_link}
+
+        Regards,
+        Your Scheduler App
+        """
+    send_mail(
+        subject="📅 New Schedule Notification",
+        message=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+        fail_silently=False,
+    )
 
 @user_passes_test(lambda u: u.is_superuser, login_url='signin')
 def manage_schedule(request):
+
     if request.method == 'POST':
         schedule_id = request.POST.get('schedule_id')
         action = request.POST.get('action')
@@ -34,8 +80,11 @@ def manage_schedule(request):
                 end_time = request.POST['end_time']
                 user_id = request.POST.get('user_id')
 
-                start = datetime.fromisoformat(start_time)
-                end = datetime.fromisoformat(end_time)
+                start = timezone.make_aware(datetime.fromisoformat(start_time))
+                end = timezone.make_aware(datetime.fromisoformat(end_time))
+
+                # start = datetime.fromisoformat(start_time)
+                # end = datetime.fromisoformat(end_time)
 
                 # Check if end time is before start time
                 if end <= start:
@@ -44,13 +93,14 @@ def manage_schedule(request):
 
                 schedule.title = title
                 schedule.department = department
-                schedule.start_time = start_time
-                schedule.end_time = end_time
+                schedule.start_time = start
+                schedule.end_time = end
 
                 if user_id:
                     schedule.user = User.objects.get(id=user_id)
 
                 schedule.save()
+                send_schedule_email(schedule)# Notify user about the update
                 messages.success(request, 'Schedule updated successfully!')
                 return redirect('manage_schedule')
 
@@ -79,8 +129,9 @@ def create_schedule(request):
         user_id = request.POST['user_id']
 
         # Parse datetime strings to Python datetime objects
-        start = datetime.fromisoformat(start_time)
-        end = datetime.fromisoformat(end_time)
+        start = timezone.make_aware(datetime.fromisoformat(start_time))
+        end = timezone.make_aware(datetime.fromisoformat(end_time))
+
 
         # Check if end time is before start time
         if end <= start:
@@ -96,6 +147,14 @@ def create_schedule(request):
             start_time=start_time,
             end_time=end_time
         )
+        new_schedule = Shedule.objects.create(
+            user=user,
+            title=title,
+            department=department,
+            start_time=start,
+            end_time=end
+        )
+        send_schedule_email(new_schedule)
         messages.success(request, 'Schedule created successfully!')
         return redirect('manage_schedule')
 
