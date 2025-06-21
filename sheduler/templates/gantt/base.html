@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weekly Shift Gantt Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            color: white;
+            margin: 0;
+        }
+
+        .navbar button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .navbar button:hover {
+            background-color: #45a049;
+        }
+
+        #gantt {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h2>Shift Scheduler</h2>
+        <a href="{% url 'index' %}">
+            <button>Go to Home</button>
+        </a>
+    </div>
+
+    <!-- Gantt Chart Container -->
+    <div id="gantt"></div>
+
+    <script>
+        const rawData = {{ chart_data|safe }};
+
+        const data = rawData.map(item => ({
+            x: item.x,
+            y: item.y,
+            type: 'bar',
+            orientation: 'h',
+            name: item.name,
+            marker: { color: item.color },
+            width: 0.5,
+            text: item.text,
+            hoverinfo: 'text'
+        }));
+
+        const layout = {
+            barmode: 'stack',
+            title: 'Employee Weekly Shifts (Gantt View)',
+            xaxis: { title: 'Time', type: 'category', automargin: true },
+            yaxis: { title: 'Day - Employee', automargin: true },
+            showlegend: true,
+            margin: { t: 50, l: 100, r: 30, b: 80 }
+        };
+
+        Plotly.newPlot('gantt', data, layout, {responsive: true});
+    </script>
+</body>
+</html>

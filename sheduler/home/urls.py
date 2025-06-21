@@ -12,4 +12,5 @@ urlpatterns = [
     path('create_schedule', views.create_schedule, name='create_schedule'),
     path('message', views.sendmessage, name='sendmessage'),
     path('inbox', views.inbox, name='inbox'),
+    path('updatestatus', views.update_schedule_status, name='updatestatus'),
 ]

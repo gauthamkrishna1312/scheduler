@@ -15,7 +15,8 @@ class Shedule(models.Model):
     end_time = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    status = models.CharField(max_length=20, null=True, blank=True)
+    
     def __str__(self):
         return self.title
 

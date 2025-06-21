@@ -20,11 +20,17 @@
             </nav>
     </header>
             <main>
+              {% if request.user.is_superuser %}
                 <section id="welcome-section">
                     <h2>Welcome to the Scheduler</h2>
                     <p>Here you can manage your tasks and schedules efficiently.</p>
                 </section>
-
+              {% else %}
+                <section id="welcome-section">
+                    <h2>Welcome to the Scheduler</h2>
+                    <p>Here you can view your schedules and Message to manager.</p>
+                </section>
+              {% endif %}
                 {% if request.user.is_superuser %}
                   <div class="inbox-container">
                       <a href="{% url 'inbox' %}">
@@ -69,6 +75,36 @@
                     </a>
                 {% endif %}
 
+                {% if request.user.is_authenticated %}
+                  <a href="{% url 'updatestatus' %}">
+                    <button style="
+                    background-color: #0077cc;
+                    color: white;
+                    padding: 10px 16px;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    ">
+                    Refresh Status
+                    </button>
+                  </a>
+                  <!-- <a href="#"> -->
+                  <a href="{% url 'weekly_gantt' %}">
+                    <button style="
+                    background-color: #0077cc;
+                    color: white;
+                    padding: 10px 16px;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    ">
+                    View Gantt Chart
+                    </button>
+                  </a>
+                {% endif %}
+
                 <h2>Your Shedules</h2>
                     <section id="task-section">
                         
@@ -77,12 +113,13 @@
                             {% for object in shedule %}
                                 <li class="schedule-card">
                                   <div class="schedule-title">
-                                    {{ object.title }}
+                                    Tittle: {{ object.title }}
                                   </div>
                                   <div class="schedule-info">
                                     <p>Department: {{ object.department }}</p>
                                     <p>Start: {{ object.start_time }}</p>
                                     <p>End: {{ object.end_time }}</p>
+                                    <p>Status: {{ object.status }}</p>
                                   </div>
                             {% endfor %}
                           </ul>

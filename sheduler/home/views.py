@@ -177,6 +177,19 @@ def inbox(request):
     return render(request, 'inbox.html', context)
 
 
+@login_required(login_url='signin')
+def update_schedule_status(request):
+    now = timezone.now()
+    for schedule in Shedule.objects.all():
+        if schedule.start_time > now:
+            schedule.status = 'pending'
+        elif schedule.start_time <= now <= schedule.end_time:
+            schedule.status = 'active'
+        elif schedule.end_time < now:
+            schedule.status = 'expired'
+        schedule.save()
+    return redirect('/')
+
 
 
 @login_required(login_url='signin')

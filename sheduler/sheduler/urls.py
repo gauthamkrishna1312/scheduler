@@ -20,5 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('gantt/', include('gantt.urls')),  # Include Gantt chart URLs
 ]
 

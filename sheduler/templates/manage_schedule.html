@@ -31,24 +31,23 @@
             
               <label>Department:</label>
               <select name="department" required>
-                  <option value="Reception">Reception</option>
-                  <option value="Pricing/Marketing">Pricing/Marketing</option>
-                  <option value="Monitoring/Inspection">Monitoring/Inspection</option>
-                  <option value="Bookkeeping">Bookkeeping</option>
-                  <option value="Sales/Customer Service">Sales/Customer Service</option>
-            </select>
-              <label>Start Time:</label>
-              <input type="datetime-local" name="start_time" required>
-              <label>End Time:</label>
-              <input type="datetime-local" name="end_time" required>
-              <label>User:</label>
-              <select name="user_id" required>
-                {% for user in users %}
-                  <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-              </select><br>
-          
-              <button type="submit">Create</button>
+                <option value="Reception">Reception</option>
+                <option value="Pricing/Marketing">Pricing/Marketing</option>
+                <option value="Monitoring/Inspection">Monitoring/Inspection</option>
+                <option value="Bookkeeping">Bookkeeping</option>
+                <option value="Sales/Customer Service">Sales/Customer Service</option>
+              </select>
+                <label>Start Time:</label>
+                <input type="datetime-local" name="start_time" required>
+                <label>End Time:</label>
+                <input type="datetime-local" name="end_time" required>
+                <label>User:</label>
+                <select name="user_id" required>
+                  {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                  {% endfor %}
+                </select><br>
+                <button type="submit">Create</button>
             </form>
         </div>
     {% endif %}
