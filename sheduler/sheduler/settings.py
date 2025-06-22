@@ -129,6 +129,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'index'
+
 load_dotenv() # Load environment variables from .env file
 # Email configuration
 EMAIL_HOST = os.environ.get('EMAIL_HOST')

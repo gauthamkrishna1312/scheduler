@@ -1,6 +1,5 @@
 from datetime import datetime
-from .models import Shedule, Message
-from .models import Shedule,User
+from .models import Shedule, Message, User
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -12,6 +11,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from urllib.parse import urlencode, quote
 # Create your views here.
+
+def password_base(request):
+    return render(request, 'password_base.html')
 
 @login_required(login_url='signin')
 def send_schedule_email(schedule):
