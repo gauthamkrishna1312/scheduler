@@ -57,33 +57,38 @@
     </div>
 
     <!-- Gantt Chart Container -->
-    <div id="gantt"></div>
+    <div id="gantt">
+        {% if has_schedules %}
+            <!-- Plotly chart code here -->
+            <script>
+                const rawData = {{ chart_data|safe }};
 
-    <script>
-        const rawData = {{ chart_data|safe }};
-
-        const data = rawData.map(item => ({
-            x: item.x,
-            y: item.y,
-            type: 'bar',
-            orientation: 'h',
-            name: item.name,
-            marker: { color: item.color },
-            width: 0.5,
-            text: item.text,
-            hoverinfo: 'text'
-        }));
-
-        const layout = {
-            barmode: 'stack',
-            title: 'Employee Weekly Shifts (Gantt View)',
-            xaxis: { title: 'Time', type: 'category', automargin: true },
-            yaxis: { title: 'Day - Employee', automargin: true },
-            showlegend: true,
-            margin: { t: 50, l: 100, r: 30, b: 80 }
-        };
-
-        Plotly.newPlot('gantt', data, layout, {responsive: true});
-    </script>
+                const data = rawData.map(item => ({
+                    x: item.x,
+                    y: item.y,
+                    type: 'bar',
+                    orientation: 'h',
+                    name: item.name,
+                    marker: { color: item.color },
+                    width: 0.5,
+                    text: item.text,
+                    hoverinfo: 'text'
+                }));
+            
+                const layout = {
+                    barmode: 'stack',
+                    title: 'Employee Weekly Shifts (Gantt View)',
+                    xaxis: { title: 'Time', type: 'category', automargin: true },
+                    yaxis: { title: 'Day - Employee', automargin: true },
+                    showlegend: true,
+                    margin: { t: 50, l: 100, r: 30, b: 80 }
+                };
+            
+                Plotly.newPlot('gantt', data, layout, {responsive: true});
+            </script>
+        {% else %}
+            <p style="padding: 20px; color: gray;">No schedules available to display.</p>
+        {% endif %}
+    </div>
 </body>
 </html>

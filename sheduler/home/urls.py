@@ -1,6 +1,7 @@
 from home import views
 from django.urls import path
 
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('signup', views.signup, name='signup'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('message', views.sendmessage, name='sendmessage'),
     path('inbox', views.inbox, name='inbox'),
     path('updatestatus', views.update_schedule_status, name='updatestatus'),
+
 ]

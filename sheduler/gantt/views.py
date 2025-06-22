@@ -7,8 +7,14 @@ from django.utils.timezone import localtime
 @login_required(login_url='signin')
 def weekly_gantt(request):
     schedules = Shedule.objects.select_related('user').all()
-
     chart_data = []
+    department_colors = {
+            'Reception': 'red',
+            'Pricing/Marketing': 'blue',
+            'Monitoring/Inspection': 'green',
+            'Bookkeeping': 'orange',
+            'Sales/Customer Service': 'yellow',
+        }
 
     for schedule in schedules:
         start_str = localtime(schedule.start_time).strftime('%H:%M')
@@ -21,13 +27,6 @@ def weekly_gantt(request):
         employee_name = schedule.user.get_full_name() or schedule.user.username
 
         # Department color map (define it as needed)
-        department_colors = {
-            'Reception': 'red',
-            'Pricing/Marketing': 'blue',
-            'Monitoring/Inspection': 'green',
-            'Bookkeeping': 'orange',
-            'Sales/Customer Service': 'yellow',
-        }
         color = department_colors.get(schedule.department, 'gray')
 
         # Append bar info for Gantt chart
@@ -39,8 +38,9 @@ def weekly_gantt(request):
             'color': color,
         })
 
-        context = {
-        'chart_data': chart_data
-    }
+    context = {
+        'chart_data': chart_data,
+        'has_schedules': bool(schedules)
+        }
     return render(request, 'gantt/base.html', context)
 

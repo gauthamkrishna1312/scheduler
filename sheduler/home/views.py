@@ -1,20 +1,18 @@
 from datetime import datetime
-from django.shortcuts import render
+from .models import Shedule, Message
+from .models import Shedule,User
 from django.contrib.auth.models import auth
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 from django.utils.timezone import localtime
-from .models import Shedule, Message
-from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect
-from django.utils import timezone
-from .models import Shedule,User
 from django.core.mail import send_mail
-from urllib.parse import urlencode, quote
 from django.conf import settings
-from datetime import datetime
+from urllib.parse import urlencode, quote
 # Create your views here.
+
 @login_required(login_url='signin')
 def send_schedule_email(schedule):
     user_email = schedule.user.email
@@ -140,13 +138,6 @@ def create_schedule(request):
 
         # Proceed with creation if validation passes
         user = User.objects.get(id=user_id)
-        Shedule.objects.create(
-            user=user,
-            title=title,
-            department=department,
-            start_time=start_time,
-            end_time=end_time
-        )
         new_schedule = Shedule.objects.create(
             user=user,
             title=title,
@@ -164,7 +155,6 @@ def create_schedule(request):
 
 @login_required(login_url='signin')
 def index(request):
-    current_datetime = timezone.now()
     shedule = Shedule.objects.filter(user=request.user).order_by('start_time')
     users = User.objects.all()
     unread_count = 0
